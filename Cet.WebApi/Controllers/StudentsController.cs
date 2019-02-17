@@ -17,12 +17,12 @@ namespace Cet.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdministratorController : ControllerBase
+    public class StudentsController : ControllerBase
     {
-        private readonly IAdministratorService _service;
+        private readonly IStudentService _service;
         private readonly IConfiguration _configuration;
 
-        public AdministratorController(IAdministratorService service, IConfiguration configuration)
+        public StudentsController(IStudentService service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;
@@ -35,27 +35,28 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromForm]AdministratorRegisterDto admin)
+        public IActionResult Register([FromForm]StudentRegisterDto student)
         {
-            if (_service.IsUserExist(admin.UserName))
+            if (_service.IsUserExist(student.UserName))
                 ModelState.AddModelError("UserName", "Username already taken");
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var adminToCreate = new Administrator()
+            var studentToCreate = new Student()
             {
+                DepartmentId = student.DepartmentId,
                 User = new User()
                 {
-                    Name = admin.Name,
-                    Surname = admin.Surname,
-                    UserName = admin.UserName,
-                    Email = admin.Email
+                    Name = student.Name,
+                    Surname = student.Surname,
+                    UserName = student.UserName,
+                    Email = student.Email
                 }
             };
 
-            var createdTeacher = _service.Register(adminToCreate, admin.Password);
-
+            var createdTeacher = _service.Register(studentToCreate, student.Password);
+            // 201: Created Status
             return StatusCode(201, createdTeacher);
         }
 

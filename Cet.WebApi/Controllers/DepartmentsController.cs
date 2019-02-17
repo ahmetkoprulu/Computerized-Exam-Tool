@@ -12,11 +12,11 @@ namespace Cet.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _service;
 
-        public DepartmentController(IDepartmentService service)
+        public DepartmentsController(IDepartmentService service)
         {
             _service = service;
         }
