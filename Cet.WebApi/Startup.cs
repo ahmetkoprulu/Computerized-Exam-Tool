@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 
 namespace Cet.WebApi
 {
@@ -39,6 +40,9 @@ namespace Cet.WebApi
             services.AddScoped<IInstructorService, InstructorManager>();
             services.AddScoped<IInstructorRepository, InstructorRepository>();
 
+            services.AddScoped<IStudentService, StudentManager>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
             services.AddScoped<IDepartmentService, DepartmentManager>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
@@ -54,9 +58,18 @@ namespace Cet.WebApi
             services.AddScoped<IAnswerService, AnswerManager>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
 
+            services.AddScoped<IStudentCourseService, StudentCourseManager>();
+            services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
+
             // Microsoft Injections
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                {
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
 
@@ -84,10 +97,12 @@ namespace Cet.WebApi
                 app.UseHsts();
             }
 
-            app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:44320"));
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+            //app.UseCors(builder => builder.WithOrigins("http://localhost:44320"));
+
         }
     }
 }

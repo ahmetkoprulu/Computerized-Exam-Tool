@@ -20,8 +20,34 @@ namespace Cet.WebApi.Controllers
             _service = service;
         }
 
+        [HttpGet("{id}/questions")]
+        public IActionResult GetQuestions(int id)
+        {
+            var exam = _service.GetIncludedSingle(
+                filter: e => e.Id == id,
+                properties: e => e.Questions);
+
+            if (exam == null)
+                return NotFound();
+
+            return Ok(exam);
+        }
+
+        [HttpGet("{id}/course")]
+        public IActionResult GetCourse(int id)
+        {
+            var exam = _service.GetIncludedSingle(
+                filter: e => e.Id == id, 
+                properties: e => e.Course);
+
+            if (exam == null)
+                return NotFound();
+
+            return Ok(exam);
+        }
+
         [HttpPost]
-        public IActionResult Create([FromForm]Exam exam)
+        public IActionResult Create(Exam exam)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

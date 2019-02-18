@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
 using Cet.DataAccess.Abstract;
 using Cet.Entities.Concrete;
+using Cet.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +15,7 @@ namespace Cet.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(Roles = Role.Admin+", "+Role.Instructor)]
     public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _service;
@@ -19,6 +23,58 @@ namespace Cet.WebApi.Controllers
         public DepartmentsController(IDepartmentService service)
         {
             _service = service;
+        }
+
+        [HttpGet("{id}/courses")]
+        public IActionResult GetCourses(int id)
+        {
+            var department = _service.GetIncludedSingle(
+                filter: d => d.Id == id, 
+                properties: d => d.Courses);
+
+            if (department == null)
+                return NotFound();
+
+            return Ok(department);
+        }
+
+        [HttpGet("{id}/instructors")]
+        public IActionResult GetInstructors(int id)
+        {
+            var department = _service.GetIncludedSingle(
+                filter: d => d.Id == id,
+                properties: d => d.Instructors);
+
+            if (department == null)
+                return NotFound();
+
+            return Ok(new JsonResult(department).Value);
+        }
+
+        [HttpGet("{id}/students")]
+        public IActionResult GetStudents(int id)
+        {
+            var department = _service.GetIncludedSingle(
+                filter: d => d.Id == id, 
+                properties: d => d.Students);
+
+            if (department == null)
+                return NotFound();
+
+            return Ok(department);
+        }
+
+        [HttpGet("{id}/members")]
+        public IActionResult GetMembers(int id)
+        {
+            var department = _service.GetIncludedSingle(
+                d => d.Id == id, 
+                d => d.Students, d => d.Instructors);
+
+            if (department == null)
+                return NotFound();
+
+            return Ok(department);
         }
 
         [HttpPost]

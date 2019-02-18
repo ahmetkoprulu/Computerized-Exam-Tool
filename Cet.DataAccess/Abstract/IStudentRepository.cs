@@ -9,6 +9,8 @@ namespace Cet.DataAccess.Abstract
     public interface IStudentRepository 
         :IRepository<Student>
     {
+        Student GetStudentWithExams(int id);
 
+        Student GetStudentWithCourses(int id);
     }
 }

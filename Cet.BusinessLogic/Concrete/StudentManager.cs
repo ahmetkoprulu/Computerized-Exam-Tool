@@ -8,11 +8,12 @@ using Cet.Entities.Concrete;
 namespace Cet.BusinessLogic.Concrete
 {
     public class StudentManager
-        : IStudentService
+        : GenericService<Student, IStudentRepository>, IStudentService
     {
         private readonly IStudentRepository _repository;
 
-        public StudentManager(IStudentRepository repository)
+        public StudentManager(IStudentRepository repository) 
+            : base(repository)
         {
             _repository = repository;
         }
@@ -73,6 +74,16 @@ namespace Cet.BusinessLogic.Concrete
                 return true;
 
             return false;
+        }
+
+        public Student GetStudentWithExams(int id)
+        {
+            return _repository.GetStudentWithExams(id);
+        }
+
+        public Student GetStudentWithCourses(int id)
+        {
+            return _repository.GetStudentWithCourses(id);
         }
     }
 }

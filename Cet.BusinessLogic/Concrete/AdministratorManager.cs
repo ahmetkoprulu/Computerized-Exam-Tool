@@ -9,11 +9,12 @@ using Cet.Entities.Concrete;
 namespace Cet.BusinessLogic.Concrete
 {
      public class AdministratorManager
-         : IAdministratorService
+         : GenericService<Administrator, IAdministratorRepository>, IAdministratorService
      {
          private readonly IAdministratorRepository _repository;
 
-         public AdministratorManager(IAdministratorRepository repository)
+         public AdministratorManager(IAdministratorRepository repository) 
+             : base(repository)
          {
              _repository = repository;
          }

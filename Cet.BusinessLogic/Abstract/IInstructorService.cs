@@ -4,7 +4,7 @@ using Cet.Entities.Concrete;
 namespace Cet.BusinessLogic.Abstract
 {
     public interface IInstructorService
-        : IRegistrableService<Instructor>
+        : IRegistrableService<Instructor>, IService<Instructor>
     {
         
     }

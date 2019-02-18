@@ -8,11 +8,12 @@ using Cet.Entities.Concrete;
 namespace Cet.BusinessLogic.Concrete
 {
     public class InstructorManager
-        : IInstructorService
+        : GenericService<Instructor, IInstructorRepository>, IInstructorService
     {
         private readonly IInstructorRepository _repository;
 
-        public InstructorManager(IInstructorRepository repository)
+        public InstructorManager(IInstructorRepository repository) 
+            : base(repository)
         {
             _repository = repository;
         }

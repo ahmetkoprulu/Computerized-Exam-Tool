@@ -3,8 +3,8 @@ using Cet.Entities.Concrete;
 
 namespace Cet.BusinessLogic.Abstract
 {
-    public interface IAdministratorService
-        : IRegistrableService<Administrator>, IService<Administrator>
+    public interface IStudentCourseService
+        : IService<StudentCourse>
     {
         
     }

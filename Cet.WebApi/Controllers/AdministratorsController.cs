@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
 using Cet.WebApi.Dtos;
+using Cet.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -75,7 +76,8 @@ namespace Cet.WebApi.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.User.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.User.UserName)
+                    new Claim(ClaimTypes.Name, user.User.UserName),
+                    new Claim(ClaimTypes.Role, Role.Admin)
                 }),
 
                 Expires = DateTime.Now.AddDays(1),

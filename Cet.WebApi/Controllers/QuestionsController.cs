@@ -20,6 +20,19 @@ namespace Cet.WebApi.Controllers
             _service = service;
         }
 
+        [HttpGet("{id}/answers")]
+        public IActionResult GetAnswers(int id)
+        {
+            var question = _service.GetIncludedSingle(
+                filter: q => q.Id == id,
+                properties: q => q.Answers);
+
+            if (question == null)
+                return NotFound();
+
+            return Ok(question);
+        }
+
         [HttpPost]
         public IActionResult Create([FromForm]Question question)
         {

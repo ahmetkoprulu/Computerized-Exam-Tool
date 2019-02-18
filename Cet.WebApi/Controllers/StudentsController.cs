@@ -28,10 +28,26 @@ namespace Cet.WebApi.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("trial")]
-        public IActionResult Trial()
+        [HttpGet("{id}/exams")]
+        public IActionResult GetExams(int id)
         {
-            return Ok("sa");
+            var student = _service.GetStudentWithExams(id);
+
+            if (student == null)
+                return NotFound();
+
+            return Ok(student);
+        }
+
+        [HttpGet("{id}/courses")]
+        public IActionResult GetStudentCourses(int id)
+        {
+            var student = _service.GetStudentWithCourses(id);
+
+            if (student == null)
+                return NotFound();
+
+            return Ok(student);
         }
 
         [HttpPost("register")]
