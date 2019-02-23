@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Cet.Core.Entities;
+﻿using Cet.Core.Entities;
 
 namespace Cet.Entities.Concrete
 {

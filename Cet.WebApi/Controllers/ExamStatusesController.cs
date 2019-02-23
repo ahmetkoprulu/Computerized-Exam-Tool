@@ -9,32 +9,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/v0/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AnswersController : ControllerBase
+    public class ExamStatusesController : ControllerBase
     {
-        private readonly IAnswerService _service;
+        private readonly IExamStatusService _service;
 
-        public AnswersController(IAnswerService service)
+        public ExamStatusesController(IExamStatusService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm]Answer answer)
+        public IActionResult Create([FromBody]ExamStatus examStatus)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            _service.Add(answer);
-            return Ok(answer);
+            _service.Add(examStatus);
+            return Ok(examStatus);
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var answers = _service.GetList();
-            return Ok(answers);
+            var examStatuses = _service.GetList();
+            return Ok(examStatuses);
         }
 
         [HttpGet("{id}")]
@@ -43,26 +43,26 @@ namespace Cet.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var answer = _service.Get(a => a.Id == id);
-            return Ok(answer);
+            var examStatus = _service.Get(d => d.Id == id);
+            return Ok(examStatus);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromForm]Answer answer, int id)
+        public IActionResult Update([FromBody]ExamStatus examStatus, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            answer.Id = id;
-            _service.Update(answer);
-            return Ok(answer);
+            examStatus.Id = id;
+            _service.Update(examStatus);
+            return Ok(examStatus);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var answer = _service.Get(a => a.Id == id);
-            _service.Delete(answer);
+            var examStatus = _service.Get(d => d.Id == id);
+            _service.Delete(examStatus);
 
             return Ok();
         }

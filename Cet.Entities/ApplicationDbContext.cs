@@ -1,9 +1,8 @@
 ﻿using System;
-using Cet.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
-namespace Cet.DataAccess.Concrete.EntityFramework
+/*
+namespace Cet.Entities
 {
     public partial class ApplicationDbContext : DbContext
     {
@@ -252,3 +251,5 @@ namespace Cet.DataAccess.Concrete.EntityFramework
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+
+    */

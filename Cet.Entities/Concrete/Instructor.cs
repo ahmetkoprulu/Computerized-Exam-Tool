@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cet.Core.Entities;
 
 namespace Cet.Entities.Concrete
@@ -8,7 +7,7 @@ namespace Cet.Entities.Concrete
     {
         public Instructor()
         {
-            Courses = new HashSet<Course>();
+            CourseOfferings = new HashSet<CourseOffering>();
         }
 
         public int Id { get; set; }
@@ -16,6 +15,6 @@ namespace Cet.Entities.Concrete
 
         public virtual Department Department { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<CourseOffering> CourseOfferings { get; set; }
     }
 }

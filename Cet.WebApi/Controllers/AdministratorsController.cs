@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
@@ -16,7 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     [ApiController]
     public class AdministratorsController : ControllerBase
     {
@@ -28,15 +29,27 @@ namespace Cet.WebApi.Controllers
             _service = service;
             _configuration = configuration;
         }
-
-        [HttpGet("trial")]
-        public IActionResult Trial()
+    
+        [HttpPut("{id}")]
+        public IActionResult Update([FromBody]Administrator admin, int id)
         {
-            return Ok("sa");
+            admin.Id = id;
+            _service.Update(admin);
+
+            return Ok(admin);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var admin = _service.GetIncludedSingle(a => a.Id == id);
+            _service.Delete(admin);
+
+            return StatusCode(204);
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromForm]AdministratorRegisterDto admin)
+        public IActionResult Register([FromBody]AdministratorRegisterDto admin)
         {
             if (_service.IsUserExist(admin.UserName))
                 ModelState.AddModelError("UserName", "Username already taken");
@@ -61,7 +74,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromForm] LoginDto userDto)
+        public IActionResult Login([FromBody]LoginDto userDto)
         {
             var user = _service.Login(userDto.UserName, userDto.Password);
 

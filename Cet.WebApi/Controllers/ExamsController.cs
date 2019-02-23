@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     [ApiController]
     public class ExamsController : ControllerBase
     {
@@ -38,7 +38,7 @@ namespace Cet.WebApi.Controllers
         {
             var exam = _service.GetIncludedSingle(
                 filter: e => e.Id == id, 
-                properties: e => e.Course);
+                properties: e => e.CourseOffering);
 
             if (exam == null)
                 return NotFound();

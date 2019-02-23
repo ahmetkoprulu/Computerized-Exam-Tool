@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     [ApiController]
     // [Authorize(Roles = Role.Admin+", "+Role.Instructor)]
     public class DepartmentsController : ControllerBase
@@ -78,7 +78,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm]Department department)
+        public IActionResult Create([FromBody]Department department)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -105,7 +105,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromForm]Department department, int id)
+        public IActionResult Update([FromBody]Department department, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

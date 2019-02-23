@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
+using Cet.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     [ApiController]
     public class CoursesController : ControllerBase
     {
@@ -21,7 +23,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm]Course course)
+        public IActionResult Create([FromBody]Course course)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -31,6 +33,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Role.Admin+", "+Role.Instructor)]
         public IActionResult GetAll()
         {
             var departments = _service.GetList();
@@ -48,7 +51,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromForm]Course course, int id)
+        public IActionResult Update([FromBody]Course course, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

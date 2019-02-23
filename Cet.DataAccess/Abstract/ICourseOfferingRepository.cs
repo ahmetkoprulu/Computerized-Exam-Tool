@@ -3,8 +3,8 @@ using Cet.Entities.Concrete;
 
 namespace Cet.DataAccess.Abstract
 {
-    public interface IStudentCourseRepository
-        : IRepository<StudentCourse>
+    public interface ICourseOfferingRepository
+        : IRepository<CourseOffering>
     {
         
     }

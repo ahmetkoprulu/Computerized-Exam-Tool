@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
 using Cet.WebApi.Dtos;
+using Cet.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Cet.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
@@ -51,7 +52,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromForm]StudentRegisterDto student)
+        public IActionResult Register([FromBody]StudentRegisterDto student)
         {
             if (_service.IsUserExist(student.UserName))
                 ModelState.AddModelError("UserName", "Username already taken");
@@ -77,7 +78,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromForm] LoginDto userDto)
+        public IActionResult Login([FromBody] LoginDto userDto)
         {
             var user = _service.Login(userDto.UserName, userDto.Password);
 
@@ -92,7 +93,8 @@ namespace Cet.WebApi.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.User.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.User.UserName)
+                    new Claim(ClaimTypes.Name, user.User.UserName),
+                    new Claim(ClaimTypes.Role, Role.Student)
                 }),
 
                 Expires = DateTime.Now.AddDays(1),

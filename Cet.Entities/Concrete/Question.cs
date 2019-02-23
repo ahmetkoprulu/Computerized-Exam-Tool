@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cet.Core.Entities;
 
 namespace Cet.Entities.Concrete
@@ -12,10 +11,13 @@ namespace Cet.Entities.Concrete
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Text { get; set; }
+        public int Num { get; set; }
         public int ExamId { get; set; }
+        public int QuestionTypeId { get; set; }
 
         public virtual Exam Exam { get; set; }
+        public virtual QuestionType QuestionType { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
     }
 }

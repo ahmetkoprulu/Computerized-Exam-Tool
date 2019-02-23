@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Cet.BusinessLogic.Abstract;
 using Cet.BusinessLogic.Concrete;
 using Cet.DataAccess.Abstract;
@@ -10,12 +6,9 @@ using Cet.DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 
@@ -58,10 +51,13 @@ namespace Cet.WebApi
             services.AddScoped<IAnswerService, AnswerManager>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
 
-            services.AddScoped<IStudentCourseService, StudentCourseManager>();
-            services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
-
             // Microsoft Injections
+            services.Configure<IISOptions>(opt =>
+            {
+                opt.AutomaticAuthentication = true;
+
+            });
+
             services.AddCors();
             services.AddMvc()
                 .AddJsonOptions(opt =>
@@ -72,7 +68,6 @@ namespace Cet.WebApi
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
@@ -101,6 +96,7 @@ namespace Cet.WebApi
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+
             //app.UseCors(builder => builder.WithOrigins("http://localhost:44320"));
 
         }
