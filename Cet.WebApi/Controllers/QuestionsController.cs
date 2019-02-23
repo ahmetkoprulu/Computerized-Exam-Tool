@@ -34,7 +34,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm]Question question)
+        public IActionResult Create([FromBody]Question question)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -61,7 +61,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromForm]Question question, int id)
+        public IActionResult Update([FromBody]Question question, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

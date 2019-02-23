@@ -33,7 +33,7 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Role.Admin+", "+Role.Instructor)]
+        // [Authorize(Roles = Role.Admin+", "+Role.Instructor)]
         public IActionResult GetAll()
         {
             var departments = _service.GetList();
