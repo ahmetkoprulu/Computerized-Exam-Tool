@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Cet.BusinessLogic.Abstract;
@@ -19,68 +18,66 @@ namespace Cet.WebApi.Controllers
 {
     [Route("api/v0/[controller]")]
     [ApiController]
-    public class AdministratorsController : ControllerBase
+    public class InstructorsController : ControllerBase
     {
-        private readonly IAdministratorService _service;
+        private readonly IInstructorService _service;
         private readonly IConfiguration _configuration;
 
-        public AdministratorsController(IAdministratorService service, IConfiguration configuration)
+        public InstructorsController(IInstructorService service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;
         }
-    
-        [HttpPut("{id}")]
-        public IActionResult Update([FromBody]Administrator admin, int id)
-        {
-            admin.Id = id;
-            _service.Update(admin);
-
-            return Ok(admin);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var admin = _service.GetIncludedSingle(a => a.Id == id);
-            _service.Delete(admin);
-
-            return StatusCode(204);
-        }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody]AdministratorRegisterDto admin)
+        public IActionResult Register([FromBody]InstructorRegisterDto instructor)
         {
-            if (_service.IsUserExist(admin.UserName))
+            if (_service.IsUserExist(instructor.UserName))
                 ModelState.AddModelError("UserName", "Username already taken");
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var adminToCreate = new Administrator()
+            var instructorToCreate = new Instructor()
             {
+                DepartmentId = instructor.DepartmentId,
                 User = new User()
                 {
-                    Name = admin.Name,
-                    Surname = admin.Surname,
-                    UserName = admin.UserName,
-                    Email = admin.Email
+                    Name = instructor.Name,
+                    Surname = instructor.Surname,
+                    UserName = instructor.UserName,
+                    Email = instructor.Email
                 }
             };
-
-            var createdTeacher = _service.Register(adminToCreate, admin.Password);
+            _service.Register(instructorToCreate, instructor.Password);
             // 201: Created Status
-            return StatusCode(201, createdTeacher);
+            return StatusCode(201);
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody]LoginDto userDto)
+        public IActionResult Login([FromBody] LoginDto loginDto)
         {
-            var user = _service.Login(userDto.UserName, userDto.Password);
+            var instructor = _service.Login(loginDto.UserName, loginDto.Password);
 
-            if (user == null)
+            if (instructor == null)
                 return Unauthorized();
 
+            var instructorDto = new InstructorDto
+            {
+                Id = instructor.Id,
+                Name = instructor.User.Name,
+                Surname = instructor.User.Surname,
+                Username = instructor.User.UserName,
+                Email = instructor.User.Email,
+                DepartmentName = instructor.Department.Name,
+                Token = CreateToken(instructor)
+            };
+
+            return Ok(instructorDto);
+        }
+
+        public string CreateToken(Instructor instructor)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
 
@@ -88,9 +85,9 @@ namespace Cet.WebApi.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.User.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.User.UserName),
-                    new Claim(ClaimTypes.Role, Role.Admin)
+                    new Claim(ClaimTypes.NameIdentifier, instructor.User.Id.ToString()),
+                    new Claim(ClaimTypes.Name, instructor.User.UserName),
+                    new Claim(ClaimTypes.Role, Role.Instructor)
                 }),
 
                 Expires = DateTime.Now.AddDays(1),
@@ -101,9 +98,7 @@ namespace Cet.WebApi.Controllers
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return Ok(tokenString);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

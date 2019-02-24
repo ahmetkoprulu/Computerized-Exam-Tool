@@ -1,8 +1,9 @@
 ﻿using System;
+using Cet.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-/*
-namespace Cet.Entities
+
+namespace Cet.DataAccess.Concrete.EntityFramework
 {
     public partial class ApplicationDbContext : DbContext
     {
@@ -78,8 +79,6 @@ namespace Cet.Entities
             {
                 entity.Property(e => e.Code).HasMaxLength(50);
 
-                entity.Property(e => e.IsActive).HasMaxLength(50);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -98,6 +97,8 @@ namespace Cet.Entities
                     .HasMaxLength(100);
 
                 entity.Property(e => e.Year).HasColumnType("date");
+
+                entity.Property(e => e.IsActive).HasMaxLength(50);
 
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.CourseOfferings)
@@ -170,9 +171,15 @@ namespace Cet.Entities
                     .IsRequired()
                     .HasMaxLength(1000);
 
+                entity.Property(e => e.Num)
+                    .IsRequired();
+
+                entity.Property(e => e.Extra)
+                    .HasMaxLength(2000);
+
                 entity.HasOne(d => d.Exam)
                     .WithMany(p => p.Questions)
-                    .HasForeignKey(d => d.Num)
+                    .HasForeignKey(d => d.ExamId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Questions_Exams");
 
@@ -251,5 +258,3 @@ namespace Cet.Entities
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-
-    */

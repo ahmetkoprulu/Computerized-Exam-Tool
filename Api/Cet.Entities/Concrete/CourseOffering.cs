@@ -15,6 +15,7 @@ namespace Cet.Entities.Concrete
         public int Id { get; set; }
         public string Semester { get; set; }
         public DateTime Year { get; set; }
+        public string IsActive { get; set; }
         public int CourseId { get; set; }
         public int InstructorId { get; set; }
 

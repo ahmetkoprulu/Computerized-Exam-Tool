@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cet.WebApi", "Cet.WebApi\Cet.WebApi.csproj", "{C9AE9312-E3BC-445A-B772-276DE0D60844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.WebApi", "Cet.WebApi\Cet.WebApi.csproj", "{C9AE9312-E3BC-445A-B772-276DE0D60844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cet.BusinessLogic", "Cet.BusinessLogic\Cet.BusinessLogic.csproj", "{969F53A6-8BDB-43C0-995F-D9F4095EEA72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.BusinessLogic", "Cet.BusinessLogic\Cet.BusinessLogic.csproj", "{969F53A6-8BDB-43C0-995F-D9F4095EEA72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cet.Core", "Cet.Core\Cet.Core.csproj", "{898EC6D3-C79F-4C7E-997D-B972C8444315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.Core", "Cet.Core\Cet.Core.csproj", "{898EC6D3-C79F-4C7E-997D-B972C8444315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cet.DataAccess", "Cet.DataAccess\Cet.DataAccess.csproj", "{4204FD24-3C81-4116-BCC2-AB77E16CDA4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.DataAccess", "Cet.DataAccess\Cet.DataAccess.csproj", "{4204FD24-3C81-4116-BCC2-AB77E16CDA4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cet.Entities", "Cet.Entities\Cet.Entities.csproj", "{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.Entities", "Cet.Entities\Cet.Entities.csproj", "{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

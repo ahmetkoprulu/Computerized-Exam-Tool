@@ -51,6 +51,18 @@ namespace Cet.WebApi
             services.AddScoped<IAnswerService, AnswerManager>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
 
+            services.AddScoped<ICourseOfferingService, CourseOfferingManager>();
+            services.AddScoped<ICourseOfferingRepository, CourseOfferingRepository>();
+
+            services.AddScoped<IExamStatusService, ExamStatusManager>();
+            services.AddScoped<IExamRepository, ExamRepository>();
+
+            services.AddScoped<IQuestionTypeService, QuestionTypeManager>();
+            services.AddScoped<IQuestionTypeRepository, QuestionTypeRepository>();
+
+            services.AddScoped<IStudentCourseOfferingService, StudentCourseOfferingManager>();
+            services.AddScoped<IStudentCourseOfferingsRepository, StudentCourseOfferingRepository>();
+
             // Microsoft Injections
             services.Configure<IISOptions>(opt =>
             {

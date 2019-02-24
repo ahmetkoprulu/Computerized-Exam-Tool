@@ -15,6 +15,7 @@ namespace Cet.Entities.Concrete
         public int Num { get; set; }
         public int ExamId { get; set; }
         public int QuestionTypeId { get; set; }
+        public string Extra { get; set; }
 
         public virtual Exam Exam { get; set; }
         public virtual QuestionType QuestionType { get; set; }

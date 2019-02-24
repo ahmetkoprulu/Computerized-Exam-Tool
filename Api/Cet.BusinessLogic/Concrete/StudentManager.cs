@@ -7,26 +7,26 @@ using Cet.Entities.Concrete;
 
 namespace Cet.BusinessLogic.Concrete
 {
-    public class InstructorManager
-        : GenericService<Instructor, IInstructorRepository>, IInstructorService
+    public class StudentManager
+        : GenericService<Student, IStudentRepository>, IStudentService
     {
-        private readonly IInstructorRepository _repository;
+        private readonly IStudentRepository _repository;
 
-        public InstructorManager(IInstructorRepository repository) 
+        public StudentManager(IStudentRepository repository) 
             : base(repository)
         {
             _repository = repository;
         }
 
-        public Instructor Register(Instructor instructor, string password)
+        public Student Register(Student student, string password)
         {
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-            instructor.User.PasswordHash = passwordHash;
-            instructor.User.PasswordSalt = passwordSalt;
+            student.User.PasswordHash = passwordHash;
+            student.User.PasswordSalt = passwordSalt;
 
-            _repository.Add(instructor);
+            _repository.Add(student);
 
-            return instructor;
+            return student;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -38,19 +38,19 @@ namespace Cet.BusinessLogic.Concrete
             }
         }
 
-        public Instructor Login(string userName, string password)
+        public Student Login(string userName, string password)
         {
-            var instructor = _repository.GetIncludedSingle(
-                                filter: i => i.User.UserName == userName,
-                                properties: i => i.User);
+            var student = _repository.GetIncludedSingle(
+                            s => s.User.UserName == userName,
+                            s => s.User, s => s.Department);
 
-            if (instructor == null)
+            if (student == null)
                 return null;
 
-            if (!VerifyPasswordHash(password, instructor.User.PasswordHash, instructor.User.PasswordSalt))
+            if (!VerifyPasswordHash(password, student.User.PasswordHash, student.User.PasswordSalt))
                 return null;
 
-            return instructor;
+            return student;
         }
 
         private bool VerifyPasswordHash(string password, byte[] userPasswordHash, byte[] userPasswordSalt)
@@ -74,6 +74,16 @@ namespace Cet.BusinessLogic.Concrete
                 return true;
 
             return false;
+        }
+
+        public Student GetStudentWithExams(int id)
+        {
+            return _repository.GetStudentWithExams(id);
+        }
+
+        public Student GetStudentWithCourses(int id)
+        {
+            return _repository.GetStudentWithCourses(id);
         }
     }
 }

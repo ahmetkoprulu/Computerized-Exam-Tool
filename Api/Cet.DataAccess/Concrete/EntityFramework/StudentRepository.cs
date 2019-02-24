@@ -34,6 +34,7 @@ namespace Cet.DataAccess.Concrete.EntityFramework
                 var student = context.Students
                     .Include(s => s.StudentCourseOfferings)
                     .ThenInclude(s => s.CourseOffering)
+                    .ThenInclude(co => co.Course)
                     .SingleOrDefault(s => s.Id == id);
 
                 return student;

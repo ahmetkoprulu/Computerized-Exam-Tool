@@ -71,20 +71,35 @@ namespace Cet.WebApi.Controllers
                     Email = student.Email
                 }
             };
-
-            var createdTeacher = _service.Register(studentToCreate, student.Password);
+            _service.Register(studentToCreate, student.Password);
             // 201: Created Status
-            return StatusCode(201, createdTeacher);
+            return StatusCode(201);
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto userDto)
+        public IActionResult Login([FromBody] LoginDto loginDto)
         {
-            var user = _service.Login(userDto.UserName, userDto.Password);
+            var student = _service.Login(loginDto.UserName, loginDto.Password);
 
-            if (user == null)
+            if (student == null)
                 return Unauthorized();
 
+            var studentDto = new StudentDto
+            {
+                Id = student.Id,
+                Name = student.User.Name,
+                Surname = student.User.Surname,
+                Username = student.User.UserName,
+                Email = student.User.Email,
+                DepartmentName = student.Department.Name,
+                Token = CreateToken(student)
+            };
+
+            return Ok(studentDto);
+        }
+
+        public string CreateToken(Student student)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
 
@@ -92,8 +107,8 @@ namespace Cet.WebApi.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.User.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.User.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, student.User.Id.ToString()),
+                    new Claim(ClaimTypes.Name, student.User.UserName),
                     new Claim(ClaimTypes.Role, Role.Student)
                 }),
 
@@ -105,9 +120,8 @@ namespace Cet.WebApi.Controllers
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
 
-            return Ok(tokenString);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
