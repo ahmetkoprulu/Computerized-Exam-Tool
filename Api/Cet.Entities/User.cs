@@ -1,8 +1,9 @@
-﻿using Cet.Core.Entities;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Cet.Entities.Concrete
+namespace Cet.Entities
 {
-    public partial class User : IEntity
+    public partial class User
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,9 +14,5 @@ namespace Cet.Entities.Concrete
         public byte[] PasswordSalt { get; set; }
         public string PhotoUrl { get; set; }
         public string PhotoId { get; set; }
-
-        public virtual Administrator Administrator { get; set; }
-        public virtual Instructor Instructor { get; set; }
-        public virtual Student Student { get; set; }
     }
 }

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.DataAccess", "Cet.DataA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cet.Entities", "Cet.Entities\Cet.Entities.csproj", "{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CetV0DatabaseGenerator", "CetV0DatabaseGenerator\CetV0DatabaseGenerator.csproj", "{4F646C73-5342-4E6B-9A94-003A4D789C7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F12780E5-B853-4C30-9F3D-E5CA04D85E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F646C73-5342-4E6B-9A94-003A4D789C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F646C73-5342-4E6B-9A94-003A4D789C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F646C73-5342-4E6B-9A94-003A4D789C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F646C73-5342-4E6B-9A94-003A4D789C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

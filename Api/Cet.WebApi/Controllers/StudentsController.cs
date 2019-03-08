@@ -5,13 +5,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
 using Cet.WebApi.Dtos;
+using Cet.WebApi.Helpers;
 using Cet.WebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Cet.WebApi.Controllers
@@ -22,11 +25,13 @@ namespace Cet.WebApi.Controllers
     {
         private readonly IStudentService _service;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public StudentsController(IStudentService service, IConfiguration configuration)
+        public StudentsController(IStudentService service, IConfiguration configuration, IOptions<CloudinarySettings> cloudinaryOptions, IMapper mapper)
         {
             _service = service;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}/exams")]
@@ -83,17 +88,22 @@ namespace Cet.WebApi.Controllers
 
             if (student == null)
                 return Unauthorized();
-
+            /*
             var studentDto = new StudentDto
             {
                 Id = student.Id,
                 Name = student.User.Name,
                 Surname = student.User.Surname,
-                Username = student.User.UserName,
+                UserName = student.User.UserName,
                 Email = student.User.Email,
                 DepartmentName = student.Department.Name,
+                PhotoUrl = student.User.PhotoUrl,
+                StudentCourses = student.StudentCourseOfferings,
                 Token = CreateToken(student)
-            };
+            };*/
+
+            var studentDto = _mapper.Map<StudentDto>(student);
+            studentDto.Token = CreateToken(student);
 
             return Ok(studentDto);
         }

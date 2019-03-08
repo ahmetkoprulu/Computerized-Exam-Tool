@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Cet.Core.DataAccess;
 using Cet.Entities.Concrete;
@@ -12,5 +13,7 @@ namespace Cet.DataAccess.Abstract
         Student GetStudentWithExams(int id);
 
         Student GetStudentWithCourses(int id);
+
+        Student GetStudentForLogin(string userName);
     }
 }

@@ -35,7 +35,8 @@ namespace Cet.DataAccess.Concrete.EntityFramework
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-CDI511I;Initial Catalog=SeasDb;Integrated Security=True");
+                // SRVBIODB\SQLEXPRESS
+                optionsBuilder.UseSqlServer(@"Data Source=SRVBIODB\SQLEXPRESS;Initial Catalog=CompExam;Integrated Security=True");
             }
         }
 
@@ -96,7 +97,7 @@ namespace Cet.DataAccess.Concrete.EntityFramework
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Year).HasColumnType("date");
+                entity.Property(e => e.Year).HasMaxLength(5);
 
                 entity.Property(e => e.IsActive).HasMaxLength(50);
 
@@ -216,8 +217,6 @@ namespace Cet.DataAccess.Concrete.EntityFramework
 
             modelBuilder.Entity<StudentCourseOffering>(entity =>
             {
-                entity.Property(e => e.RegistrationDate).HasColumnType("date");
-
                 entity.HasOne(d => d.CourseOffering)
                     .WithMany(p => p.StudentCourseOfferings)
                     .HasForeignKey(d => d.CourseOfferingId)

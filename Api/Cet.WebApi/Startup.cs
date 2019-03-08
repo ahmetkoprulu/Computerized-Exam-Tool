@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using AutoMapper;
 using Cet.BusinessLogic.Abstract;
 using Cet.BusinessLogic.Concrete;
 using Cet.DataAccess.Abstract;
 using Cet.DataAccess.Concrete.EntityFramework;
+using Cet.WebApi.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using Serilog.Core;
 
 namespace Cet.WebApi
 {
@@ -26,6 +29,9 @@ namespace Cet.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Third Party Configurations
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
             // Service and Repository Dependency Injection
             services.AddScoped<IAdministratorService, AdministratorManager>();
             services.AddScoped<IAdministratorRepository, AdministratorRepository>();
@@ -63,7 +69,7 @@ namespace Cet.WebApi
             services.AddScoped<IStudentCourseOfferingService, StudentCourseOfferingManager>();
             services.AddScoped<IStudentCourseOfferingsRepository, StudentCourseOfferingRepository>();
 
-            // Microsoft Injections
+            // Microsoft configurations
             services.Configure<IISOptions>(opt =>
             {
                 opt.AutomaticAuthentication = true;
@@ -71,6 +77,7 @@ namespace Cet.WebApi
             });
 
             services.AddCors();
+            services.AddAutoMapper();
             services.AddMvc()
                 .AddJsonOptions(opt =>
                 {

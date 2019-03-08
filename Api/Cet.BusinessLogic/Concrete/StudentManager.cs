@@ -18,6 +18,16 @@ namespace Cet.BusinessLogic.Concrete
             _repository = repository;
         }
 
+        public Student GetStudentWithExams(int id)
+        {
+            return _repository.GetStudentWithExams(id);
+        }
+
+        public Student GetStudentWithCourses(int id)
+        {
+            return _repository.GetStudentWithCourses(id);
+        }
+
         public Student Register(Student student, string password)
         {
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -40,9 +50,11 @@ namespace Cet.BusinessLogic.Concrete
 
         public Student Login(string userName, string password)
         {
-            var student = _repository.GetIncludedSingle(
+            /*var student = _repository.GetIncludedSingle(
                             s => s.User.UserName == userName,
-                            s => s.User, s => s.Department);
+                            s => s.User, s => s.Department, s => s.StudentCourseOfferings);
+                            */
+            var student = _repository.GetStudentForLogin(userName);
 
             if (student == null)
                 return null;
@@ -74,16 +86,6 @@ namespace Cet.BusinessLogic.Concrete
                 return true;
 
             return false;
-        }
-
-        public Student GetStudentWithExams(int id)
-        {
-            return _repository.GetStudentWithExams(id);
-        }
-
-        public Student GetStudentWithCourses(int id)
-        {
-            return _repository.GetStudentWithCourses(id);
         }
     }
 }
