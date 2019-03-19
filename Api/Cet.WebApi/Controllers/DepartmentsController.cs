@@ -104,7 +104,7 @@ namespace Cet.WebApi.Controllers
             return Ok(department);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]Department department, int id)
         {
             if (!ModelState.IsValid)
@@ -115,7 +115,7 @@ namespace Cet.WebApi.Controllers
             return Ok(department);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var department = _service.Get(d => d.Id == id);

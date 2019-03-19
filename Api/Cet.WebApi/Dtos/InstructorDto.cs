@@ -7,6 +7,7 @@
         public string Surname { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Role = "instructor";
         public string DepartmentName { get; set; }
         public string Token { get; set; }
     }

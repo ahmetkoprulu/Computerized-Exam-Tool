@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
+using Cet.WebApi.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +16,12 @@ namespace Cet.WebApi.Controllers
     public class CourseOfferingsController : ControllerBase
     {
         private readonly ICourseOfferingService _service;
+        private readonly IMapper _mapper;
 
-        public CourseOfferingsController(ICourseOfferingService service)
+        public CourseOfferingsController(ICourseOfferingService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -28,6 +32,18 @@ namespace Cet.WebApi.Controllers
 
             _service.Add(courseOffering);
             return Ok(courseOffering);
+        }
+
+        [HttpGet("{id}/exams")]
+        public IActionResult GetExams(int id)
+        {
+            var courseOffering = _service.GetIncludedSingle(
+                filter: co => co.Id == id,
+                properties: co => co.Exams);
+
+            var exams = _mapper.Map<List<ExamDto>>(courseOffering.Exams);
+
+            return Ok(exams);
         }
 
         [HttpGet]
@@ -48,7 +64,7 @@ namespace Cet.WebApi.Controllers
             return Ok(courseOffering);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]CourseOffering courseOffering, int id)
         {
             if (!ModelState.IsValid)
@@ -59,7 +75,7 @@ namespace Cet.WebApi.Controllers
             return Ok(courseOffering);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var courseOffering = _service.Get(d => d.Id == id);

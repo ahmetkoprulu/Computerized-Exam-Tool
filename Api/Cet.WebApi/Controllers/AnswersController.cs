@@ -47,7 +47,7 @@ namespace Cet.WebApi.Controllers
             return Ok(answer);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]Answer answer, int id)
         {
             if (!ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace Cet.WebApi.Controllers
             return Ok(answer);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var answer = _service.Get(a => a.Id == id);

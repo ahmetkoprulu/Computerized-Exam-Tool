@@ -16,63 +16,49 @@ namespace Cet.WebApi.Controllers
             new MockUserDto
             {
                 Id = 2,
-                Nick = "masterofdata",
+                Nick = "ahmet",
                 Name = "Ensar",
                 Surname = "Köprülü",
                 Mail = "2",
                 Role = "student",
                 Dept = "2",
                 Uni = "istanbul_sehir_university",
-                Token = "2"
+                Token = "2",
+                Password = "2"
             },
             new MockUserDto
             {
                 Id = 2,
-                Nick = "masterofdata",
+                Nick = "alicakmak",
                 Name = "Ali",
                 Surname = "Cakmak",
                 Mail = "2",
                 Role = "instructor",
                 Dept = "2",
                 Uni = "istanbul_sehir_university",
-                Token = "2"
+                Token = "2",
+                Password = "1"
             }
         };
 
-        [HttpGet("login")]
-        public IActionResult Login()
+        [HttpGet("login/{userName}/{password}")]
+        public IActionResult Login(string userName, string password)
         {
-            MockUserDto user = new MockUserDto()
-            {
-                Id = 2,
-                Nick = "masterofdata",
-                Name = "Ensar",
-                Surname = "Köprülü",
-                Mail = "2",
-                Role = "student",
-                Dept = "2",
-                Uni = "istanbul_sehir_university",
-                Token = "2"
-            };
+            var user = Users.SingleOrDefault(u => u.Nick == userName && u.Password == password);
+
+            if (user == null)
+                return Unauthorized();
 
             return Ok(user);
         }
 
-        [HttpGet("login/instructor")]
-        public IActionResult LoginInstructor()
+        [HttpGet("login/instructor/{userName}/{password}")]
+        public IActionResult LoginInstructor(string userName, string password)
         {
-            MockUserDto user = new MockUserDto()
-            {
-                Id = 2,
-                Nick = "masterofdata",
-                Name = "Ali",
-                Surname = "Cakmak",
-                Mail = "2",
-                Role = "instructor",
-                Dept = "2",
-                Uni = "istanbul_sehir_university",
-                Token = "2"
-            };
+            var user = Users.SingleOrDefault(u => u.Nick == userName && u.Password == password);
+
+            if (user == null)
+                return Unauthorized();
 
             return Ok(user);
         }
@@ -128,6 +114,7 @@ namespace Cet.WebApi.Controllers
         public string Dept { get; set; }
         public string Uni { get; set; }
         public string Token { get; set; }
+        public string Password { get; set; }
     }
 
     public class MockCoursesDto

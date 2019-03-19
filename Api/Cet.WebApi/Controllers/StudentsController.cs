@@ -88,21 +88,9 @@ namespace Cet.WebApi.Controllers
 
             if (student == null)
                 return Unauthorized();
-            /*
-            var studentDto = new StudentDto
-            {
-                Id = student.Id,
-                Name = student.User.Name,
-                Surname = student.User.Surname,
-                UserName = student.User.UserName,
-                Email = student.User.Email,
-                DepartmentName = student.Department.Name,
-                PhotoUrl = student.User.PhotoUrl,
-                StudentCourses = student.StudentCourseOfferings,
-                Token = CreateToken(student)
-            };*/
 
-            var studentDto = _mapper.Map<StudentDto>(student);
+            var studentDto = _mapper.Map<MemberDto>(student);
+            studentDto.Role = "student";
             studentDto.Token = CreateToken(student);
 
             return Ok(studentDto);

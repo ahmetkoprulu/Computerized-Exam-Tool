@@ -36,7 +36,7 @@ namespace Cet.DataAccess.Concrete.EntityFramework
             if (!optionsBuilder.IsConfigured)
             {
                 // SRVBIODB\SQLEXPRESS
-                optionsBuilder.UseSqlServer(@"Data Source=SRVBIODB\SQLEXPRESS;Initial Catalog=CompExam;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-CDI511I;Initial Catalog=CompExam;Integrated Security=True");
             }
         }
 

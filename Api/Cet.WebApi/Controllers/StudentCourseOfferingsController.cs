@@ -47,7 +47,7 @@ namespace Cet.WebApi.Controllers
             return Ok(studentCourseOffering);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]StudentCourseOffering studentCourseOffering, int id)
         {
             if (!ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace Cet.WebApi.Controllers
             return Ok(studentCourseOffering);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var studentCourseOffering = _service.Get(d => d.Id == id);

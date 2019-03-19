@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
+using Cet.WebApi.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +16,12 @@ namespace Cet.WebApi.Controllers
     public class ExamsController : ControllerBase
     {
         private readonly IExamService _service;
+        private readonly IMapper _mapper;
 
-        public ExamsController(IExamService service)
+        public ExamsController(IExamService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}/questions")]
@@ -73,18 +77,19 @@ namespace Cet.WebApi.Controllers
             return Ok(exam);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update([FromBody]Exam exam, int id)
+        [HttpPost("{id}")]
+        public IActionResult Update([FromBody]ExamDto examDto, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            var exam = _mapper.Map<Exam>(examDto);
             exam.Id = id;
             _service.Update(exam);
             return Ok(exam);
         }
 
-        [HttpDelete("{id}")]
+        [HttpGet("{id}/delete")]
         public IActionResult Delete(int id)
         {
             var exam = _service.Get(d => d.Id == id);

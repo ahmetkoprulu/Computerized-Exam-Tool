@@ -1,14 +1,15 @@
 ﻿using Cet.BusinessLogic.Abstract;
 using Cet.Core.BusinessLogic;
+using Cet.DataAccess.Abstract;
 using Cet.DataAccess.Concrete.EntityFramework;
 using Cet.Entities.Concrete;
 
 namespace Cet.BusinessLogic.Concrete
 {
     public class QuestionManager
-        : GenericService<Question, QuestionRepository>, IQuestionService
+        : GenericService<Question, IQuestionRepository>, IQuestionService
     {
-        public QuestionManager(QuestionRepository repository) : base(repository)
+        public QuestionManager(IQuestionRepository repository) : base(repository)
         {
         }
     }

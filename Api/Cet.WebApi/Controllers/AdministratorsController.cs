@@ -28,7 +28,7 @@ namespace Cet.WebApi.Controllers
             _configuration = configuration;
         }
     
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]Administrator admin, int id)
         {
             admin.Id = id;
@@ -37,7 +37,7 @@ namespace Cet.WebApi.Controllers
             return Ok(admin);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var admin = _service.GetIncludedSingle(a => a.Id == id);

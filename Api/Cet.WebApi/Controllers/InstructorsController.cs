@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Cet.BusinessLogic.Abstract;
 using Cet.Entities.Concrete;
 using Cet.WebApi.Dtos;
@@ -22,11 +23,13 @@ namespace Cet.WebApi.Controllers
     {
         private readonly IInstructorService _service;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public InstructorsController(IInstructorService service, IConfiguration configuration)
+        public InstructorsController(IInstructorService service, IConfiguration configuration, IMapper mapper)
         {
             _service = service;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -62,18 +65,31 @@ namespace Cet.WebApi.Controllers
             if (instructor == null)
                 return Unauthorized();
 
-            var instructorDto = new InstructorDto
-            {
-                Id = instructor.Id,
-                Name = instructor.User.Name,
-                Surname = instructor.User.Surname,
-                Username = instructor.User.UserName,
-                Email = instructor.User.Email,
-                DepartmentName = instructor.Department.Name,
-                Token = CreateToken(instructor)
-            };
+//            var instructorDto = new InstructorDto
+  //          {
+    //            Id = instructor.Id,
+      //          Name = instructor.User.Name,
+        //        Surname = instructor.User.Surname,
+          //      Username = instructor.User.UserName,
+            //    Email = instructor.User.Email,
+              //  DepartmentName = instructor.Department.Name,
+                //Token = CreateToken(instructor)
+            //};
+
+            var instructorDto = _mapper.Map<MemberDto>(instructor);
+            instructorDto.Role = "instructor";
+            instructorDto.Token = CreateToken(instructor);
 
             return Ok(instructorDto);
+        }
+
+        [HttpGet("{id}/courseofferings")]
+        public IActionResult GetExams(int id)
+        {
+            var instructor = _service.GetIncludedSingle(filter: i => i.Id == id, properties: i => i.CourseOfferings);
+            var courses = _mapper.Map<CourseOfferingDto>(instructor.CourseOfferings);
+
+            return Ok(courses);
         }
 
         public string CreateToken(Instructor instructor)

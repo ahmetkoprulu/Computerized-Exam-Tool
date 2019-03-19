@@ -47,7 +47,7 @@ namespace Cet.WebApi.Controllers
             return Ok(questionType);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Update([FromBody]QuestionType questionType, int id)
         {
             if (!ModelState.IsValid)
@@ -58,7 +58,7 @@ namespace Cet.WebApi.Controllers
             return Ok(questionType);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public IActionResult Delete(int id)
         {
             var questionType = _service.Get(d => d.Id == id);

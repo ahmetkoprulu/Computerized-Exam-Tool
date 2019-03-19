@@ -10,5 +10,6 @@ namespace Cet.DataAccess.Abstract
     public interface IInstructorRepository 
         : IRepository<Instructor>
     {
+        Instructor GetInstructorForLogin(string userName);
     }
 }

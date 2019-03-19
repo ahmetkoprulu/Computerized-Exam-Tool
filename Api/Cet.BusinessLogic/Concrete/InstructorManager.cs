@@ -40,9 +40,7 @@ namespace Cet.BusinessLogic.Concrete
 
         public Instructor Login(string userName, string password)
         {
-            var instructor = _repository.GetIncludedSingle(
-                                i => i.User.UserName == userName,
-                                i => i.User, i => i.Department);
+            var instructor = _repository.GetInstructorForLogin(userName);
 
             if (instructor == null)
                 return null;
