@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using Cet.BusinessLogic.Abstract;
 using Cet.Core.BusinessLogic;
@@ -21,6 +22,11 @@ namespace Cet.BusinessLogic.Concrete
         public Student GetStudentWithExams(int id)
         {
             return _repository.GetStudentWithExams(id);
+        }
+
+        public Student GetStudentExams(int id)
+        {
+            return _repository.GetActiveExams(id);
         }
 
         public Student GetStudentWithCourses(int id)

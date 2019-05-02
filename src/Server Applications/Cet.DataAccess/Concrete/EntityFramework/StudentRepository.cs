@@ -28,6 +28,20 @@ namespace Cet.DataAccess.Concrete.EntityFramework
             }
         }
 
+        public Student GetActiveExams(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var student = context.Students
+                    .Include(s => s.StudentCourseOfferings)
+                    .ThenInclude(s => s.CourseOffering)
+                    .ThenInclude(c => c.Exams.Where(e => e.Date.AddMinutes(-10) >= DateTime.Today))
+                    .SingleOrDefault(s => s.Id == id);
+
+                return student;
+            }
+        }
+
         public Student GetStudentForLogin(string userName)
         {
             using (var context = new ApplicationDbContext())

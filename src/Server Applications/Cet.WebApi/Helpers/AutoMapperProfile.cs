@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Cet.Entities.Concrete;
 using Cet.WebApi.Dtos;
 

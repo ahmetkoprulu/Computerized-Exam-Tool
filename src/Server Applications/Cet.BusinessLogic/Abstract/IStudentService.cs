@@ -1,4 +1,5 @@
-﻿using Cet.Core.BusinessLogic;
+﻿using System.Collections.Generic;
+using Cet.Core.BusinessLogic;
 using Cet.Entities.Concrete;
 
 namespace Cet.BusinessLogic.Abstract
@@ -7,6 +8,8 @@ namespace Cet.BusinessLogic.Abstract
         : IRegistrableService<Student>, IService<Student>
     {
         Student GetStudentWithExams(int id);
+
+        Student GetStudentActiveExams(int id);
 
         Student GetStudentWithCourses(int id);
     }

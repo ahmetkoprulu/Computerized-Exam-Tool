@@ -12,6 +12,8 @@ namespace Cet.DataAccess.Abstract
     {
         Student GetStudentWithExams(int id);
 
+        Student GetActiveExams(int id);
+
         Student GetStudentWithCourses(int id);
 
         Student GetStudentForLogin(string userName);

@@ -45,6 +45,26 @@ namespace Cet.WebApi.Controllers
             return Ok(student);
         }
 
+        [HttpGet("{id}/exams/active")]
+        public IActionResult GetActiveExams(int id)
+        {
+            var student = _service.GetStudentActiveExams(id);
+
+            if (student == null)
+                return NotFound();
+
+            List<Exam> exams = new List<Exam>();
+            foreach (var studentStudentCourseOffering in student.StudentCourseOfferings)
+            {
+                foreach (var exam in studentStudentCourseOffering.CourseOffering.Exams)
+                {   
+                    exams.Add(exam);
+                }
+            }
+
+            return Ok(exams);
+        }
+
         [HttpGet("{id}/courses")]
         public IActionResult GetStudentCourses(int id)
         {
