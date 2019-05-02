@@ -24,7 +24,7 @@ namespace Cet.BusinessLogic.Concrete
             return _repository.GetStudentWithExams(id);
         }
 
-        public Student GetStudentExams(int id)
+        public Student GetStudentActiveExams(int id)
         {
             return _repository.GetActiveExams(id);
         }
