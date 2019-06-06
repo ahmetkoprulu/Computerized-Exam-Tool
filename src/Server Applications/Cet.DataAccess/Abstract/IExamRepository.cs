@@ -1,5 +1,6 @@
 ﻿using Cet.Core.DataAccess;
 using Cet.Entities.Concrete;
+using System.Collections.Generic;
 
 namespace Cet.DataAccess.Abstract
 {
@@ -7,6 +8,8 @@ namespace Cet.DataAccess.Abstract
         : IRepository<Exam>
 
     {
-        
+        List<Exam> GetActiveExams(int courseId);
+
+        Exam InsertExam(Exam entity);
     }
 }

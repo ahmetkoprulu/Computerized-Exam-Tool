@@ -4,6 +4,7 @@ using System.Text;
 using Cet.BusinessLogic.Abstract;
 using Cet.Core.BusinessLogic;
 using Cet.DataAccess.Abstract;
+using Cet.Entities.Complex;
 using Cet.Entities.Concrete;
 
 namespace Cet.BusinessLogic.Concrete
@@ -56,10 +57,6 @@ namespace Cet.BusinessLogic.Concrete
 
         public Student Login(string userName, string password)
         {
-            /*var student = _repository.GetIncludedSingle(
-                            s => s.User.UserName == userName,
-                            s => s.User, s => s.Department, s => s.StudentCourseOfferings);
-                            */
             var student = _repository.GetStudentForLogin(userName);
 
             if (student == null)
@@ -92,6 +89,21 @@ namespace Cet.BusinessLogic.Concrete
                 return true;
 
             return false;
+        }
+
+        public List<User> ListStudentsByCourseId(int id)
+        {
+            return _repository.ListStudentsByCourseId(id);
+        }
+
+        public List<ComplexStudent> ListStudentsByExamId(int id)
+        {
+            return _repository.ListStudentsByExamId(id);
+        }
+
+        public void LogStudent(StudentActivities activity)
+        {
+            _repository.LogStudent(activity);
         }
     }
 }

@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Security;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -16,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace Cet.WebApi.Controllers
 {
@@ -74,6 +79,54 @@ namespace Cet.WebApi.Controllers
                 return NotFound();
 
             return Ok(student);
+        }
+
+        [HttpGet("export/{id}")]
+        public IActionResult ListStudentByExamId(int id)
+        {
+            var students = _service.ListStudentsByExamId(id);
+
+            return Ok(students);
+        }
+
+        [HttpGet("courses/{id}")]
+        public IActionResult ListStudentByCourseId(int id)
+        {
+            var students = _service.ListStudentsByCourseId(id);
+
+            return Ok(students);
+        }
+
+        [HttpPost("bulk/{id}")]
+        public IActionResult BulkRegister(int id, [FromBody]List<Student> students)
+        {
+            foreach (var student in students)
+            {
+                try
+                {
+                    var pass = RandomString(10);
+                    student.StudentCourseOfferings.Add(new StudentCourseOffering() { StudentId = student.Id, CourseOfferingId = id, RegistrationDate = DateTime.Now });
+                    student.DepartmentId = 1;
+                    _service.Register(student, pass);
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
+                    SmtpServer.UseDefaultCredentials = false;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("qwer1x1@gmail.com", "ekokobaba1");
+                    SmtpServer.EnableSsl = true;
+                    SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    mail.From = new MailAddress("qwer1x1@gmail.com", "Comp Exam");
+                    mail.To.Add(new MailAddress(student.User.UserName));
+                    mail.Subject = "Registration";
+                    mail.Body = "Your Password Is " + pass;
+                    ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+                    SmtpServer.Send(mail);
+                }
+                catch (Exception ex)
+                {
+                    return NotFound(JObject.Parse("{ \"message\":\""+ex.Message+"\"}"));
+                }
+            }
+            return Ok();
         }
 
         [HttpPost("register")]
@@ -140,6 +193,14 @@ namespace Cet.WebApi.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public static string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

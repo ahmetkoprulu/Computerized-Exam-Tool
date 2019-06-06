@@ -50,7 +50,13 @@ namespace Cet.WebApi.Controllers
             return Ok(exam);
         }
 
-        [HttpPost]
+        [HttpGet("{id}/active")]
+        public IActionResult GetActiveExams(int id)
+        {
+            return Ok(_service.GetActiveExams(id));
+        }
+
+        [HttpPost("create")]
         public IActionResult Create([FromBody]Exam exam)
         {
             if (!ModelState.IsValid)
@@ -58,6 +64,15 @@ namespace Cet.WebApi.Controllers
 
             _service.Add(exam);
             return Ok(exam);
+        }
+
+        [HttpPost]
+        public IActionResult Insert([FromBody]Exam exam)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(_service.AddExam(exam));
         }
 
         [HttpGet]
