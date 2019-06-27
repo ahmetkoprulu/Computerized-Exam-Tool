@@ -6,6 +6,6 @@ namespace Cet.BusinessLogic.Abstract
     public interface IAnswerService
         : IService<Answer>
     {
-        
+        void AddOrUpdate(Answer entity);
     }
 }

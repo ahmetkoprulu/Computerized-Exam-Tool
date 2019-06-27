@@ -12,5 +12,10 @@ namespace Cet.BusinessLogic.Concrete
         {
 
         }
+
+        public void AddOrUpdate(Answer entity)
+        {
+            Repository.AddOrUpdate(entity);
+        }
     }
 }

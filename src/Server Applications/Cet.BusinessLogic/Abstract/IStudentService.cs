@@ -8,6 +8,7 @@ namespace Cet.BusinessLogic.Abstract
     public interface IStudentService
         : IRegistrableService<Student>, IService<Student>
     {
+        void RegisterStudentToCourse(StudentCourseOffering offering);
         Student GetStudentWithExams(int id);
 
         Student GetStudentActiveExams(int id);

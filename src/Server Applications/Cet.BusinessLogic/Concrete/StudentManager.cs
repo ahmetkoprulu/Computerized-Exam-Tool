@@ -20,6 +20,11 @@ namespace Cet.BusinessLogic.Concrete
             _repository = repository;
         }
 
+        public void RegisterStudentToCourse(StudentCourseOffering offering)
+        {
+            _repository.RegisterStudentToCourse(offering);
+        }
+
         public Student GetStudentWithExams(int id)
         {
             return _repository.GetStudentWithExams(id);

@@ -98,35 +98,48 @@ namespace Cet.WebApi.Controllers
         }
 
         [HttpPost("bulk/{id}")]
-        public IActionResult BulkRegister(int id, [FromBody]List<Student> students)
+        public IActionResult BulkRegister(int id, [FromBody]List<StudentRegisterDto> students)
         {
+            var newStudents = new List<string>();
             foreach (var student in students)
             {
-                try
+                var stu = _service.GetIncludedSingle(filter: s => s.User.UserName == student.UserName, properties: s => s.StudentCourseOfferings);
+
+                if (stu == null)
                 {
-                    var pass = RandomString(10);
-                    student.StudentCourseOfferings.Add(new StudentCourseOffering() { StudentId = student.Id, CourseOfferingId = id, RegistrationDate = DateTime.Now });
-                    student.DepartmentId = 1;
-                    _service.Register(student, pass);
-                    MailMessage mail = new MailMessage();
-                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
-                    SmtpServer.UseDefaultCredentials = false;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential("qwer1x1@gmail.com", "ekokobaba1");
-                    SmtpServer.EnableSsl = true;
-                    SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    mail.From = new MailAddress("qwer1x1@gmail.com", "Comp Exam");
-                    mail.To.Add(new MailAddress(student.User.UserName));
-                    mail.Subject = "Registration";
-                    mail.Body = "Your Password Is " + pass;
-                    ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
-                    SmtpServer.Send(mail);
+                    try
+                    {
+                        newStudents.Add(student.UserName);
+                        var studentToCreate = new Student()
+                        {
+                            DepartmentId = 1,
+                            User = new User()
+                            {
+                                Name = student.Name,
+                                Surname = student.Surname,
+                                UserName = student.UserName,
+                                Email = student.Email
+                            }
+                        };
+                        studentToCreate.StudentCourseOfferings.Add(new StudentCourseOffering() { StudentId = studentToCreate.Id, CourseOfferingId = id, RegistrationDate = DateTime.Now });
+                        studentToCreate.DepartmentId = 1;
+                        _service.Register(studentToCreate, student.Password);
+                    }
+                    catch (Exception ex)
+                    {
+                        return NotFound(JObject.Parse("{ \"message\":\"" + ex.Message + "\"}"));
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    return NotFound(JObject.Parse("{ \"message\":\""+ex.Message+"\"}"));
+                    var cs = stu.StudentCourseOfferings.SingleOrDefault(co => co.CourseOfferingId == id);
+                    if(cs == null)
+                    {
+                        _service.RegisterStudentToCourse(new StudentCourseOffering() { StudentId = stu.Id, CourseOfferingId = id, RegistrationDate = DateTime.Now });
+                    }
                 }
             }
-            return Ok();
+            return Ok(newStudents);
         }
 
         [HttpPost("register")]

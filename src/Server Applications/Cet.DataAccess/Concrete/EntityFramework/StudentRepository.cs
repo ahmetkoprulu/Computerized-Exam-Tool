@@ -15,6 +15,14 @@ namespace Cet.DataAccess.Concrete.EntityFramework
     public class StudentRepository 
         : Repository<Student, ApplicationDbContext>, IStudentRepository
     {
+        public void RegisterStudentToCourse(StudentCourseOffering offering)
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                context.StudentCourseOfferings.Add(offering);
+                context.SaveChanges();
+            }
+        }
         public Student GetStudentWithExams(int id)
         {
             using (var context = new ApplicationDbContext())
@@ -76,13 +84,19 @@ namespace Cet.DataAccess.Concrete.EntityFramework
 
         public void LogStudent(StudentActivities activity)
         {
+            throw new NotImplementedException();
+        }
+
+        /*
+        public void LogStudent(StudentActivities activity)
+        {
             using(var context = new ApplicationDbContext())
             {
                 context.StudentActivities.Add(activity);
                 context.SaveChanges();
             }
         }
-
+        */
         public List<ComplexStudent> ListStudentsByExamId(int id)
         {
             using (var context = new ApplicationDbContext())
@@ -93,7 +107,7 @@ namespace Cet.DataAccess.Concrete.EntityFramework
                                 .Include(s => s.Answers)
                              from a in context.Answers
                              from q in context.Questions
-                             where q.ExamId == 30
+                             where q.ExamId == id
                              where a.QuestionId == q.Id
                              where a.StudentId == s.Id
                              select s).Distinct().ToList<Student>();

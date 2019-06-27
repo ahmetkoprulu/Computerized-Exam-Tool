@@ -28,7 +28,6 @@ namespace Cet.DataAccess.Concrete.EntityFramework
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<QuestionType> QuestionTypes { get; set; }
         public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<StudentActivities> StudentActivities { get; set; }
         public virtual DbSet<StudentCourseOffering> StudentCourseOfferings { get; set; }
         public virtual DbSet<User> Users { get; set; }
 

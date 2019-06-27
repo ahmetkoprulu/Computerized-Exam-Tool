@@ -11,6 +11,8 @@ namespace Cet.DataAccess.Abstract
     public interface IStudentRepository 
         :IRepository<Student>
     {
+        void RegisterStudentToCourse(StudentCourseOffering offering);
+
         Student GetStudentWithExams(int id);
 
         Student GetActiveExams(int id);

@@ -26,7 +26,7 @@ namespace Cet.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            _service.Add(answer);
+            _service.AddOrUpdate(answer);
             return Ok(answer);
         }
 
